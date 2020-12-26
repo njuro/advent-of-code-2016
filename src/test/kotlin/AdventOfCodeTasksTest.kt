@@ -18,6 +18,11 @@ class AdventOfCodeTasksTest {
         runTaskTest(Triangles(), 862, 1577)
     }
 
+    @Test
+    fun day4() {
+        runTaskTest(Rooms(), 185371, 984)
+    }
+
     private fun runTaskTest(task: AdventOfCodeTask, part1Result: Any, part2Result: Any) {
         assertEquals(part1Result, task.run())
         assertEquals(part2Result, task.run(part2 = true))
