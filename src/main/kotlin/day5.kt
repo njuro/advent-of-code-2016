@@ -2,7 +2,7 @@ import utils.readInputBlock
 import java.security.MessageDigest
 
 /** [https://adventofcode.com/2016/day/5] */
-class Day5 : AdventOfCodeTask {
+class Hashes : AdventOfCodeTask {
     override fun run(part2: Boolean): Any {
         return sequence(readInputBlock("5.txt"), shuffled = part2).take(8)
             .sortedBy { it.first }.map { it.second }.joinToString("")
@@ -37,5 +37,5 @@ class Day5 : AdventOfCodeTask {
 }
 
 fun main() {
-    println(Day5().run(part2 = true))
+    println(Hashes().run(part2 = true))
 }

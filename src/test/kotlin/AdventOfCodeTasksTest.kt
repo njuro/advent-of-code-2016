@@ -25,7 +25,12 @@ class AdventOfCodeTasksTest {
 
     @Test
     fun day5() {
-        runTaskTest(Day5(), "4543c154", "1050cbbd")
+        runTaskTest(Hashes(), "4543c154", "1050cbbd")
+    }
+
+    @Test
+    fun day6() {
+        runTaskTest(Message(), "umejzgdw", "aovueakv")
     }
 
     private fun runTaskTest(task: AdventOfCodeTask, part1Result: Any, part2Result: Any) {
