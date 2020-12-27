@@ -38,6 +38,20 @@ class AdventOfCodeTasksTest {
         runTaskTest(Addresses(), 110, 242)
     }
 
+    @Test
+    fun day8() {
+        runTaskTest(
+            Lights(), 128, """
+            ####..##...##..###...##..###..#..#.#...#.##...##..
+            #....#..#.#..#.#..#.#..#.#..#.#..#.#...##..#.#..#.
+            ###..#..#.#..#.#..#.#....#..#.####..#.#.#..#.#..#.
+            #....#..#.####.###..#.##.###..#..#...#..####.#..#.
+            #....#..#.#..#.#.#..#..#.#....#..#...#..#..#.#..#.
+            ####..##..#..#.#..#..###.#....#..#...#..#..#..##..
+        """.trimIndent()
+        )
+    }
+
     private fun runTaskTest(task: AdventOfCodeTask, part1Result: Any, part2Result: Any) {
         assertEquals(part1Result, task.run())
         assertEquals(part2Result, task.run(part2 = true))
