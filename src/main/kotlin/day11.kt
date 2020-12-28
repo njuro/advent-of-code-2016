@@ -1,14 +1,25 @@
 import utils.readInputLines
 
 /** [https://adventofcode.com/2016/day/11] */
-class Day11 : AdventOfCodeTask {
+class Elevator : AdventOfCodeTask {
 
     data class State(val steps: Int, val floor: Int, val map: List<Set<String>>)
 
     override fun run(part2: Boolean): Any {
-        val input = readInputLines("11.txt")
-        val floors = listOf(setOf("TG", "TM", "PG", "SG"), setOf("PM", "SM"), setOf("QG", "QM", "RG", "RM"), setOf())
-        // val floors = listOf(setOf("HM", "LM"), setOf("HG"), setOf("LG"), setOf())
+        val divider = Regex(",?( and)? a ")
+        val floors = readInputLines("11.txt").map {
+            if ("nothing relevant" in it) mutableSetOf()
+            else it.substringAfter("floor contains a ").dropLast(1).split(divider).toMutableSet()
+        }
+        if (part2) {
+            floors[0].addAll(
+                setOf(
+                    "elerium generator", "elerium-compatible microchip",
+                    "dilithium generator", "dilithium-compatible microchip"
+                )
+            )
+        }
+        val itemsCount = floors.sumBy { it.size }
 
         val queue = mutableListOf(State(0, 0, floors))
         val seen = mutableSetOf<String>()
@@ -21,11 +32,11 @@ class Day11 : AdventOfCodeTask {
             seen.add(hash)
             val items = current.map[current.floor]
 
-            val oneItems = items.map { setOf(it) }
+            val oneItem = items.map { setOf(it) }
             val twoItems = items.flatMap { first ->
                 items.filter { it != first }.map { second -> setOf(first, second) }
             }.toSet()
-            val candidates = oneItems + twoItems
+            val candidates = oneItem + twoItems
             setOf(current.floor - 1, current.floor + 1).forEach outer@{ nextFloor ->
                 if (nextFloor < 0 || nextFloor > 3) {
                     return@outer
@@ -39,8 +50,8 @@ class Day11 : AdventOfCodeTask {
                         return@inner
                     }
 
-                    if (nextFloor == 3 && nextMap[nextFloor].size == 10) {
-                        return current.steps
+                    if (nextFloor == 3 && nextMap[nextFloor].size == itemsCount) {
+                        return current.steps + 1
                     }
 
                     queue.add(State(current.steps + 1, nextFloor, nextMap))
@@ -48,15 +59,16 @@ class Day11 : AdventOfCodeTask {
             }
         }
 
-        return -1
+        throw IllegalArgumentException()
     }
 
     private fun Set<String>.isValid() =
-        none { it.endsWith("G") } || filter { it.endsWith("M") }.all { "${it.first()}G" in this }
+        none { it.endsWith("generator") } ||
+            filter { it.endsWith("microchip") }.all { "${it.substringBefore("-")} generator" in this }
 
-    private fun List<Set<String>>.hash() = joinToString("|") { it.joinToString("") }
+    private fun List<Set<String>>.hash() = joinToString("|") { it.sorted().map(String::last).joinToString("") }
 }
 
 fun main() {
-    println(Day11().run(part2 = false))
+    println(Elevator().run(part2 = true))
 }
