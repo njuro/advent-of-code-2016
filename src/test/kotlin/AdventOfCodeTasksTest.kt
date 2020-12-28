@@ -92,6 +92,11 @@ class AdventOfCodeTasksTest {
         runTaskTest(Curve(), "10010100110011100", "01100100101101100")
     }
 
+    @Test
+    fun day17() {
+        runTaskTest(Vault(), "DUDDRLRRRD", 578)
+    }
+
     private fun runTaskTest(task: AdventOfCodeTask, part1Result: Any, part2Result: Any) {
         assertEquals(part1Result, task.run())
         assertEquals(part2Result, task.run(part2 = true))
